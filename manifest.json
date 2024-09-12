@@ -1,0 +1,25 @@
+{
+  "manifest_version": 3,
+  "name": "Filtre Vidéos YouTube",
+  "version": "1.0",
+  "description": "Cache les vidéos YouTube ayant moins de 1000 vues",
+  "permissions": [
+      "activeTab",
+      "scripting"
+    ],
+    "background": {
+      "service_worker": "background.js"
+    },
+    "action": {
+      "default_popup": "popup.html"
+    },
+    "icons": {
+      "48": "icon.png"
+    },
+  "content_scripts": [
+    {
+      "matches": ["*://*.youtube.com/*"],
+      "js": ["content.js"]
+    }
+  ]
+}
