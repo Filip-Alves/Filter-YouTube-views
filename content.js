@@ -1,11 +1,14 @@
 const observer = new MutationObserver(filterVideos);
 
 function parseNumberWithSuffix(text) {
+  // Supprimer tous les espaces, y compris les espaces insécables
+  text = text.replace(/\s+/g, '');
+  
   // Expression régulière pour capturer les chiffres avec ou sans décimales et le suffixe
   var match = text.match(/([\d.,]+)([KMB]?)/i);
   if (match) {
       // Remplacer les virgules par des points pour garantir une conversion correcte
-      var number = parseFloat(match[1].replace(/,/g, ''));
+      var number = parseFloat(match[1].replace(',', '.'));
       var suffix = match[2].toUpperCase();
 
       switch (suffix) {
@@ -24,17 +27,19 @@ function parseNumberWithSuffix(text) {
 
 function filterVideos() {
   const videos = document.querySelectorAll('ytd-rich-item-renderer, ytd-grid-video-renderer'); // Cibler différents types de rendus de vidéos
-
+    
   videos.forEach(video => {
     // Sélectionner uniquement le premier élément <span> avec les classes spécifiées
     const viewsElement = video.querySelector('span.inline-metadata-item.style-scope.ytd-video-meta-block');
     
     if (viewsElement) {
       var textContent = viewsElement.textContent;
+      console.log("textContent ", textContent);
       
       var numberOfViews = parseNumberWithSuffix(textContent);
+      console.log("numberOfViews ", numberOfViews);
       
-      if (numberOfViews < 300) {
+      if (numberOfViews < 300) { 
         video.style.display = "none"
       } else if (numberOfViews < 1000) {
         video.style.background = "grey";
